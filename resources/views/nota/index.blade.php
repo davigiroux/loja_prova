@@ -4,7 +4,7 @@
     <div class="col-md-8 offset-md-2">
     <h3>Notas de: {{$cliente->nome}} </h3>
     <h4>
-        <a href="{{url('/nota/create/'.$cliente->id)}}">Gerar nova nota</a>
+        <a href="{{url('/nota/create/'.$cliente->id)}}" class="btn btn-success">Gerar nova nota</a>
     </h4>
         <div id="accordion" role="tablist">
             @foreach ($cliente->notas as $nota)

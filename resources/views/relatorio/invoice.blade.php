@@ -23,7 +23,9 @@
                         <td style="padding: 5px 20px; border: 1px solid black; margin: 0;">{{$item->nome}}</td>
                         <td style="padding: 5px 10px; border: 1px solid black; margin: 0;">R$ {{number_format($item->valor, 2, ',', '.')}}</td>
                         <td style="padding: 5px 10px; border: 1px solid black; margin: 0;">{{$item->pivot->quantidade}}</td>
-                        <td style="padding: 5px 10px; border: 1px solid black; margin: 0;">{{R$ {{number_format($item->valor * $item->pivot->quantidade, 2, ',', '.')}}</td>
+                        <td style="padding: 5px 10px; border: 1px solid black; margin: 0;">
+                            R$ {{ number_format($item->valor * $item->pivot->quantidade, 2, ',', '.') }}
+                        </td>
                     </tr>
                     @endForeach
                 </tbody>
