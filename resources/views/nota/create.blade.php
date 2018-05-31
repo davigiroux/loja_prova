@@ -5,7 +5,7 @@
         <h3>Nova nota para: {{$cliente->nome}} </h3>
         <form>
             <p>
-                <a class="btn" data-toggle="collapse" href="#add-produto" role="button" aria-expanded="false" aria-controls="add-produto">
+                <a class="btn btn-success" data-toggle="collapse" href="#add-produto" role="button" aria-expanded="false" aria-controls="add-produto">
                     Lançar produto
                 </a>
             </p>
@@ -21,7 +21,7 @@
                         </select>
                         <input style="margin-right: 10px;" type="text" class="form-control col-1" value="1" id="quantidade" placeholder="Quantidade de itens">
 
-                        <button style="margin-right: 10px;" type="button" onclick="adicionaProduto()"  class="btn btn-success col-2">Adicionar</button>
+                        <button style="margin-right: 10px;" type="button" onclick="adicionaProduto()"  class="btn btn-primary col-2">Adicionar</button>
 
                         <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#criaProduto" aria-expanded="false" aria-controls="criaProduto">
                             Criar Produto
