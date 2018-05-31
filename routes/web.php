@@ -26,6 +26,8 @@ Route::get('/nota/create/{cliente_id}', 'NotaController@create');
 
 Route::post('/nota', 'NotaController@store');
 
+Route::post('/nota/download/{nota_id}', 'NotaController@download');
+
 Route::get('/relatorio', 'RelatorioController@index')->name('relatorio.index');
 
 Route::post('/relatorio', 'RelatorioController@download')->name('relatorio.download');

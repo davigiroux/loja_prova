@@ -53,7 +53,22 @@ class RelatorioController extends Controller
             }
         }
 
+
+        $request->valor_inicial = str_replace(",",".",$request->valor_inicial);
+        $request->valor_final = str_replace(",",".",$request->valor_final);
+
+        if(is_numeric($request->valor_inicial) && is_numeric($request->valor_final)) {
+            foreach($clientes as $cliente) {
+                $notasAux = collect();
+                foreach($cliente->notas as $nota) {
+                    if($nota->total >= $request->valor_inicial && $nota->total <= $request->valor_final) {
+                        $notasAux->push($nota);
+                    }
+                }
+                $cliente->notas = $notasAux;
+            }
+        }
         $pdf = PDF::loadView('relatorio.invoice', array('clientes' => $clientes, 'dataInicio' => $dataInicio, 'dataFim' => $dataFim));
-        return $pdf->download('relatorio.pdf');
+         return $pdf->download('relatorio.pdf');
     }
 }

@@ -12,4 +12,9 @@ class Nota extends Model
     public function itens() {
         return $this->belongsToMany('App\Produto', 'nota_produto', 'nota_id', 'produto_id')->withPivot('quantidade');;
     }
+
+    public function cliente()
+    {
+        return $this->belongsTo('App\Cliente', 'cliente_id');
+    }
 }

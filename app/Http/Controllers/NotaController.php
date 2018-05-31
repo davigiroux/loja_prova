@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PDF;
 
 class NotaController extends Controller
 {
@@ -19,6 +20,13 @@ class NotaController extends Controller
         $nota = new \App\Nota;
         $nota->valor = 0;
         return view('nota.create', compact('cliente', 'nota', 'produtos'));
+    }
+
+    public function download($id)
+    {
+        $nota = \App\Nota::find($id);
+        $pdf = PDF::loadView('nota.invoice', array('nota' => $nota));
+         return $pdf->download('relatorio.pdf');
     }
 
     public function store(Request $request)

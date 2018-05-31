@@ -1,6 +1,7 @@
 @extends('layouts.loja') @section('content')
 <div class="row">
     <div class="col-md-8 offset-md-2">
+        <a href="{{ route('cliente.index') }}">Cliente</a> / <a href="{{ url('/nota/'.$cliente->id) }}">Notas</a> / Gerar nota
         <h3>Nova nota para: {{$cliente->nome}} </h3>
         <form>
             <p>
@@ -11,7 +12,7 @@
             <div class="collapse" id="add-produto">
                 <div class="card card-body">
                     <div class="input-group mb-3">
-                        <select style="margin-right: 10px;" class="custom-select col-7" id="produtos">
+                        <select style="margin-right: 10px; width:" class="custom-select col-7" id="produtos">
                             <option selected>Escolha um produto...</option>
                             @foreach ($produtos as $produto)
                             <option value="{{$produto->id}}">{{$produto->nome}}</option>
@@ -57,6 +58,7 @@
                     <th>Produto</th>
                     <th>Valor</th>
                     <th>Quantidade</th>
+                    <th>Total Produto</th>
                 </thead>
                 <tbody>
                     @foreach ($nota->itens as $item)
@@ -64,6 +66,7 @@
                         <th scope="row">{{$item->nome}}</th>
                         <td>{{$item->valor}}</td>
                         <td>{{$item->pivot->quantidade}}</td>
+                        <td>{{$item->pivot->quantidade * $item->valor}}</td>
                     </tr>
                     @endForeach
                 </tbody>
@@ -90,20 +93,40 @@
         function adicionaProduto() {
             let produto_id = $('#produtos :selected').val()
 
-            adicionaNaTabela($('#produtos :selected').text(), $('#valor-'+produto_id).val(), $('#quantidade').val())
 
+            let prod = produtos.find(p => p.id === produto_id)
             const valor = Number($('#valor-' + produto_id).val());
             const qtd = Number($('#quantidade').val());
+            const prod_nome = $('#produtos :selected').text()
+            if(prod) {
+                prod.quantidade+=qtd
+                const total = prod.quantidade * valor
+                $('#'+prod_nome).text(prod.quantidade)
+                $('#total-prod-'+prod_nome).text(parseFloat(total).toFixed(2))
+            } else {
+                produtos.push({
+                    id: produto_id,
+                    quantidade: qtd
+                });
+                adicionaNaTabela($('#produtos :selected')
+                .text(), $('#valor-'+produto_id).val(), $('#quantidade').val())
+            }
+
+
+
+
             atualizaTotal(valor, qtd, produto_id);
         }
 
         function adicionaNaTabela(produto, valor, quantidade) {
+            const total = quantidade * valor;
             $('#minhaTabela').append(
                 `
                 <tr>
                     <td>${produto}</td>
-                    <td>${valor}</td>
-                    <td>${quantidade} </td>
+                    <td>${parseFloat(valor).toFixed(2)}</td>
+                    <td id="${produto}">${quantidade} </td>
+                    <td id="total-prod-${produto}">${parseFloat(total).toFixed(2)} </td>
                 </tr>
             `
             );
@@ -116,10 +139,6 @@
             $('#total').val(total);
 
             $('#total').text(total);
-            produtos.push({
-                id: produto,
-                quantidade: qtd
-            });
         }
 
         function enviarNota() {
@@ -149,6 +168,10 @@
                         const quantidade = Number($('#quantidade_produto').val());
 
                         atualizaTotal(valor, quantidade, produto_id)
+                        produtos.push({
+                            id: produto_id,
+                            quantidade: quantidade
+                        });
 
                         $('#nome_produto').val('')
                         $('#valor_produto').val('')
